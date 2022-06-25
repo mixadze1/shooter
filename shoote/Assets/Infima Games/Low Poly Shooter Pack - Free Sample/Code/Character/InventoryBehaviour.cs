@@ -41,13 +41,9 @@ namespace InfimaGames.LowPolyShooterPack
         /// PlayerCharacter component to run this with the index it wants to equip!
         /// </summary>
         /// <param name="equippedAtStart">Inventory index of the weapon we want to equip when the game starts.</param>
-        public abstract void Init(int equippedAtStart = 0);
-        
-        /// <summary>
-        /// Equips a Weapon.
-        /// </summary>
-        /// <param name="index">Index of the weapon to equip.</param>
-        /// <returns>Weapon that was just equipped.</returns>
+        public abstract void Init(int equippedAtStart);
+
+        public abstract void ChangeWeapon(int equippedWeapon);
         public abstract WeaponBehaviour Equip(int index);
 
         #endregion

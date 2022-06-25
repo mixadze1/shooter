@@ -1,16 +1,10 @@
-﻿// Copyright 2021, Infima Games. All Rights Reserved.
-
+﻿
 using UnityEngine;
 
 namespace InfimaGames.LowPolyShooterPack
 {
-    /// <summary>
-    /// Magazine.
-    /// </summary>
     public class Magazine : MagazineBehaviour
     {
-        #region FIELDS SERIALIZED
-
         [Header("Settings")]
         
         [Tooltip("Total Ammunition.")]
@@ -23,19 +17,9 @@ namespace InfimaGames.LowPolyShooterPack
         [SerializeField]
         private Sprite sprite;
 
-        #endregion
-
-        #region GETTERS
-
-        /// <summary>
-        /// Ammunition Total.
-        /// </summary>
         public override int GetAmmunitionTotal() => ammunitionTotal;
-        /// <summary>
-        /// Sprite.
-        /// </summary>
+
         public override Sprite GetSprite() => sprite;
 
-        #endregion
     }
 }

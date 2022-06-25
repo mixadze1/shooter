@@ -24,7 +24,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Fire",
+                    "name": "Fires",
                     "type": "Button",
                     "id": "a299f9af-95f1-47fd-bf72-fec244e341fd",
                     "expectedControlType": "Button",
@@ -158,7 +158,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Fire",
+                    "action": "Fires",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -169,7 +169,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Fire",
+                    "action": "Fires",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

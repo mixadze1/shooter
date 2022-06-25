@@ -28,16 +28,19 @@ namespace InfimaGames.LowPolyShooterPack
         [Tooltip("How fast the player moves while running."), SerializeField]
         private float speedRunning = 9.0f;
 
+        [Tooltip("force jump"), SerializeField]
+        private float forceJump = 5f;
+
         #endregion
 
         #region PROPERTIES
 
-        //Velocity.
+
         private Vector3 Velocity
         {
-            //Getter.
+
             get => rigidBody.velocity;
-            //Setter.
+
             set => rigidBody.velocity = value;
         }
 
@@ -45,67 +48,41 @@ namespace InfimaGames.LowPolyShooterPack
 
         #region FIELDS
 
-        /// <summary>
-        /// Attached Rigidbody.
-        /// </summary>
         private Rigidbody rigidBody;
-        /// <summary>
-        /// Attached CapsuleCollider.
-        /// </summary>
+
         private CapsuleCollider capsule;
-        /// <summary>
-        /// Attached AudioSource.
-        /// </summary>
+
         private AudioSource audioSource;
-        
-        /// <summary>
-        /// True if the character is currently grounded.
-        /// </summary>
+
         private bool grounded;
 
-        /// <summary>
-        /// Player Character.
-        /// </summary>
         private CharacterBehaviour playerCharacter;
-        /// <summary>
-        /// The player character's equipped weapon.
-        /// </summary>
+
         private WeaponBehaviour equippedWeapon;
-        
-        /// <summary>
-        /// Array of RaycastHits used for ground checking.
-        /// </summary>
+
         private readonly RaycastHit[] groundHits = new RaycastHit[8];
 
         #endregion
 
         #region UNITY FUNCTIONS
 
-        /// <summary>
-        /// Awake.
-        /// </summary>
         protected override void Awake()
         {
-            //Get Player Character.
             playerCharacter = ServiceLocator.Current.Get<IGameModeService>().GetPlayerCharacter();
         }
 
-        /// Initializes the FpsController on start.
         protected override  void Start()
         {
-            //Rigidbody Setup.
             rigidBody = GetComponent<Rigidbody>();
             rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
-            //Cache the CapsuleCollider.
+
             capsule = GetComponent<CapsuleCollider>();
 
-            //Audio Source Setup.
             audioSource = GetComponent<AudioSource>();
             audioSource.clip = audioClipWalking;
             audioSource.loop = true;
         }
 
-        /// Checks if the character is on the ground.
         private void OnCollisionStay()
         {
             //Bounds.
@@ -135,7 +112,9 @@ namespace InfimaGames.LowPolyShooterPack
         {
             //Move.
             MoveCharacter();
-            
+
+            JumpCharacter();
+
             //Unground.
             grounded = false;
         }
@@ -154,14 +133,25 @@ namespace InfimaGames.LowPolyShooterPack
 
         #region METHODS
 
+ 
+        private void JumpCharacter()
+        {
+            Vector3 frameInput = playerCharacter.GetInputMovement();
+            var jump = new Vector3(frameInput.x, frameInput.y, frameInput.z);
+            if (playerCharacter.IsJumping() && grounded)
+            {
+                Velocity = new Vector3(Velocity.x, forceJump, Velocity.z);
+            }
+        }
+
         private void MoveCharacter()
         {
-            #region Calculate Movement Velocity
+            #region C   alculate Movement Velocity
 
             //Get Movement Input!
-            Vector2 frameInput = playerCharacter.GetInputMovement();
+            Vector3 frameInput = playerCharacter.GetInputMovement();
             //Calculate local-space direction by using the player's input.
-            var movement = new Vector3(frameInput.x, 0.0f, frameInput.y);
+            var movement = new Vector3(frameInput.x, 0f, frameInput.y);
             
             //Running speed calculation.
             if(playerCharacter.IsRunning())
@@ -178,7 +168,7 @@ namespace InfimaGames.LowPolyShooterPack
             #endregion
             
             //Update Velocity.
-            Velocity = new Vector3(movement.x, 0.0f, movement.z);
+            Velocity = new Vector3(movement.x, Velocity.y, movement.z);
         }
 
         /// <summary>
